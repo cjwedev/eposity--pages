@@ -11,7 +11,8 @@ angular.module('app', [
     'ui.utils',
     'oc.lazyLoad',
     'ngSanitize',
-    'oauth'
+    'oauth',
+    'restangular'
 ]);
 
 

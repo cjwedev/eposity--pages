@@ -218,7 +218,8 @@ angular.module('app')
                         'assets/plugins/jquery-datatable/extensions/TableTools/js/dataTables.tableTools.min.js',
                         'assets/plugins/jquery-datatable/extensions/Bootstrap/jquery-datatable-bootstrap.js',
                         'assets/plugins/datatables-responsive/js/datatables.responsive.js',
-                        'assets/plugins/datatables-responsive/js/lodash.min.js'
+                        'assets/plugins/datatables-responsive/js/lodash.min.js',
+                        'assets/plugins/angular-datatables/angular-datatables.min.js'
                     ],
                     serie: true // load in the exact order
                 }, {

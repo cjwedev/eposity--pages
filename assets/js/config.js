@@ -4,32 +4,32 @@
  * ============================================================ */
 
 angular.module('app')
-    .config(['$stateProvider', '$urlRouterProvider', '$ocLazyLoadProvider', '$httpProvider', '$locationProvider',
-        function($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, $httpProvider, $locationProvider) {
+    .config(['$stateProvider', '$urlRouterProvider', '$ocLazyLoadProvider', '$httpProvider', '$locationProvider', 'RestangularProvider',
+        function($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, $httpProvider, $locationProvider, RestangularProvider) {
 
             $httpProvider.defaults.useXDomain = true;
 
-            //RestangularProvider.setBaseUrl('http://office.eposity.com/EposityOffice/api/');
-            // add a response intereceptor
-            //RestangularProvider.addResponseInterceptor(function (data, operation, what, url, response, deferred) {
-            //    var extractedData;
-            //    // .. to look for getList operations
-            //    if (operation === 'getList') {
-            //        console.log(url);
-            //        if (url == 'http://office.eposity.com/EposityOffice/api/Reports/HourlySalesEventSourced') {
-            //            extractedData = data.HourlySales;
-            //            extractedData.DailySalesAmount = data.DailySalesAmount;
-            //        } else {
-            //            extractedData = data;
-            //        }
-            //    } else {
-            //        extractedData = data;
-            //    }
-            //    console.log('steve');
-            //    console.log(extractedData);
-            //
-            //    return extractedData;
-            //});
+            RestangularProvider.setBaseUrl('http://office.eposity.com/EposityOffice/api/');
+            //add a response intereceptor
+            RestangularProvider.addResponseInterceptor(function (data, operation, what, url, response, deferred) {
+                var extractedData;
+                // .. to look for getList operations
+                if (operation === 'getList') {
+                    console.log(url);
+                    if (url == 'http://office.eposity.com/EposityOffice/api/Reports/HourlySalesEventSourced') {
+                        extractedData = data.HourlySales;
+                        extractedData.DailySalesAmount = data.DailySalesAmount;
+                    } else {
+                        extractedData = data;
+                    }
+                } else {
+                    extractedData = data;
+                }
+                console.log('steve');
+                console.log(extractedData);
+
+                return extractedData;
+            });
 
             $stateProvider
                 .state('login', {
@@ -73,16 +73,28 @@ angular.module('app')
                 // Sales
                 .state('sales', {
                     url: '/sales',
-                    data: {pageTitle: 'Sales Transactions'},
+                    data: { pageTitle: 'Sales Transactions' },
                     authenticate: true,
                     apiRequest: false,
                     views: {
                         'base': {
-                            'templateUrl': 'views/authorized.html'
+                            templateUrl: 'tpl/app.html'
                         },
                         'content@sales': {
-                            templateUrl: 'views/sales/index.html',
-                            //controller: SalesController
+                            templateUrl: 'tpl/views/sales/index.html',
+                            controller: SalesController,
+                            resolve: {
+                                deps: ['$ocLazyLoad', function($ocLazyLoad) {
+                                    return $ocLazyLoad.load([
+                                        'dataTables'
+                                    ], {
+                                        insertBefore: '#lazyload_placeholder'
+                                    })
+                                    .then(function() {
+                                        return $ocLazyLoad.load('assets/js/controllers/salesCtrl.js');
+                                    });
+                                }]
+                            }
                         }
                     }
                 })
@@ -90,29 +102,41 @@ angular.module('app')
                     url: '/:id/details',
                     authenticate: true,
                     apiRequest: true,
-                    data: {pageTitle: 'Transaction Details'},
+                    data: { pageTitle: 'Transaction Details' },
                     views: {
                         'base': {
-                            'templateUrl': 'views/authorized.html'
+                            templateUrl: 'tpl/app.html'
                         },
                         'content@sales': {
-                            templateUrl: 'views/sales/details.html',
-                            //controller: SalesController
+                            templateUrl: 'tpl/views/sales/details.html',
+                            controller: SalesController
                         }
                     }
                 })
                 .state('salesEventSourcing', {
                     url: '/sales/hourly/event-sourcing',
-                    data: {pageTitle: 'Event Sourced Hourly Sales'},
+                    data: { pageTitle: 'Event Sourced Hourly Sales' },
                     authenticate: true,
                     apiRequest: false,
                     views: {
                         'base': {
-                            'templateUrl': 'views/authorized.html'
+                            templateUrl: 'tpl/app.html'
                         },
                         'content@salesEventSourcing': {
-                            templateUrl: 'views/sales/hourly/event-sourcing.html',
-                            //controller: HourlySalesController
+                            templateUrl: 'tpl/views/sales/hourly/event-sourcing.html',
+                            controller: HourlySalesController,
+                            resolve: {
+                                deps: ['$ocLazyLoad', function($ocLazyLoad) {
+                                    return $ocLazyLoad.load([
+                                        'dataTables'
+                                    ], {
+                                        insertBefore: '#lazyload_placeholder'
+                                    })
+                                    .then(function() {
+                                        return $ocLazyLoad.load('assets/js/controllers/hourlyCtrl.js');
+                                    });
+                                }]
+                            }
                         }
                     }
                 })
