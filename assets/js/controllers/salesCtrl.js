@@ -20,7 +20,7 @@ var SalesController = function ($scope, $timeout, Restangular, AccessToken, DTOp
                 //DTColumnDefBuilder.newColumnDef(1).notVisible(),
                 DTColumnDefBuilder.newColumnDef(2).notSortable().withOption('sWidth', '130px')
             ];
-            $('.page-spinner-bar').addClass('hide');
+            //$('.page-spinner-bar').addClass('hide');
         }
     }
 
@@ -34,7 +34,7 @@ var SalesController = function ($scope, $timeout, Restangular, AccessToken, DTOp
             $scope.salesTransactionLines = salesTransaction.SalesTransactionLines;
             $scope.dtOptions = DTOptionsBuilder.newOptions().withDOM('rtip').withDisplayLength(-1);
 
-            $('.page-spinner-bar').addClass('hide');
+            //$('.page-spinner-bar').addClass('hide');
         });
     }
 }

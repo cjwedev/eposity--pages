@@ -7,7 +7,7 @@
 angular.module('app')
     .config(['$ocLazyLoadProvider', function($ocLazyLoadProvider) {
         $ocLazyLoadProvider.config({
-            debug: true,
+            debug: false,
             events: true,
             modules: [{
                     name: 'isotope',

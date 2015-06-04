@@ -24,11 +24,7 @@ accessTokenService.factory('AccessToken', function($rootScope, $location, $local
             baseUrl: 'http://auth.eposity.com/Tahoe.Authentication/token',
             clientId: 'ngAuthApp',
             clientSecret: 'EposityResourceOwner'
-        },
-        oAuth2HashTokens = [ //per http://tools.ietf.org/html/rfc6749#section-4.2.2
-            'access_token', 'token_type', 'expires_in', 'scope', 'state',
-            'error','error_description'
-        ];
+        };
 
     /**
      * Returns the access token.
@@ -39,6 +35,7 @@ accessTokenService.factory('AccessToken', function($rootScope, $location, $local
 
     service.obtainFromServer = function(username, password)
     {
+        console.log('obtainFromServer----------');
         var req = {
             method: 'POST',
             url: service.baseUrl,
@@ -71,7 +68,7 @@ accessTokenService.factory('AccessToken', function($rootScope, $location, $local
 
     service.refreshTokenFromServer = function()
     {
-
+        console.log('refreshTokenFromServer----------');
         var req = {
             method: 'POST',
             url: service.baseUrl,

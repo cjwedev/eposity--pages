@@ -25,7 +25,6 @@ angular.module('app')
                 } else {
                     extractedData = data;
                 }
-                console.log('steve');
                 console.log(extractedData);
 
                 return extractedData;
@@ -89,9 +88,6 @@ angular.module('app')
                                         'dataTables'
                                     ], {
                                         insertBefore: '#lazyload_placeholder'
-                                    })
-                                    .then(function() {
-                                        return $ocLazyLoad.load('assets/js/controllers/salesCtrl.js');
                                     });
                                 }]
                             }
@@ -109,7 +105,16 @@ angular.module('app')
                         },
                         'content@sales': {
                             templateUrl: 'tpl/views/sales/details.html',
-                            controller: SalesController
+                            controller: SalesController,
+                            resolve: {
+                                deps: ['$ocLazyLoad', function($ocLazyLoad) {
+                                    return $ocLazyLoad.load([
+                                        'dataTables'
+                                    ], {
+                                        insertBefore: '#lazyload_placeholder'
+                                    });
+                                }]
+                            }
                         }
                     }
                 })
@@ -131,9 +136,6 @@ angular.module('app')
                                         'dataTables'
                                     ], {
                                         insertBefore: '#lazyload_placeholder'
-                                    })
-                                    .then(function() {
-                                        return $ocLazyLoad.load('assets/js/controllers/hourlyCtrl.js');
                                     });
                                 }]
                             }
@@ -148,11 +150,20 @@ angular.module('app')
                     apiRequest: false,
                     views: {
                         'base': {
-                            'templateUrl': 'views/authorized.html'
+                            templateUrl: 'tpl/app.html'
                         },
                         'content@salesSingleEntry': {
-                            templateUrl: 'views/sales/hourly/single-entry.html',
-                            //controller: HourlySalesController
+                            templateUrl: 'tpl/views/sales/hourly/single-entry.html',
+                            controller: HourlySalesController,
+                            resolve: {
+                                deps: ['$ocLazyLoad', function($ocLazyLoad) {
+                                    return $ocLazyLoad.load([
+                                        'dataTables'
+                                    ], {
+                                        insertBefore: '#lazyload_placeholder'
+                                    });
+                                }]
+                            }
                         }
                     }
                 })
@@ -163,11 +174,20 @@ angular.module('app')
                     apiRequest: false,
                     views: {
                         'base': {
-                            'templateUrl': 'views/authorized.html'
+                            templateUrl: 'tpl/app.html'
                         },
                         'content@salesMultipleEntry': {
-                            templateUrl: 'views/sales/hourly/multiple-entry.html',
-                            //controller: HourlySalesController
+                            templateUrl: 'tpl/views/sales/hourly/multiple-entry.html',
+                            controller: HourlySalesController,
+                            resolve: {
+                                deps: ['$ocLazyLoad', function($ocLazyLoad) {
+                                    return $ocLazyLoad.load([
+                                        'dataTables'
+                                    ], {
+                                        insertBefore: '#lazyload_placeholder'
+                                    });
+                                }]
+                            }
                         }
                     }
                 })

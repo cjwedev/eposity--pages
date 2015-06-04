@@ -21,7 +21,7 @@ var HourlySalesController = function ($scope, $timeout, Restangular, AccessToken
             //DTColumnDefBuilder.newColumnDef(1).notVisible(),
             DTColumnDefBuilder.newColumnDef(2).notSortable().withOption('sWidth', '130px')
         ];
-        $('.page-spinner-bar').addClass('hide');
+        //$('.page-spinner-bar').addClass('hide');
     }
 
     $scope.initEventSource = function () {
@@ -44,7 +44,7 @@ var HourlySalesController = function ($scope, $timeout, Restangular, AccessToken
             //Restangular.setDefaultRequestParams({'access_token': token.access_token});
             Restangular.setDefaultHeaders({'Authorization': token.token_type + " " + token.access_token});
             Restangular.setDefaultRequestParams({'date': '2015-04-30'});
-            Restangular.one('Reports/HourlySalesSingleEntry').get().then(function(entries){
+                Restangular.one('Reports/HourlySalesSingleEntry').get().then(function(entries){
                 $scope.entries = entries.HourlySales;
             });
 
@@ -54,7 +54,7 @@ var HourlySalesController = function ($scope, $timeout, Restangular, AccessToken
                 //DTColumnDefBuilder.newColumnDef(1).notVisible(),
                 DTColumnDefBuilder.newColumnDef(2).notSortable().withOption('sWidth', '130px')
             ];
-            $('.page-spinner-bar').addClass('hide');
+            //$('.page-spinner-bar').addClass('hide');
         }
     }
 
@@ -63,8 +63,8 @@ var HourlySalesController = function ($scope, $timeout, Restangular, AccessToken
             //Restangular.setDefaultRequestParams({'access_token': token.access_token});
             Restangular.setDefaultHeaders({'Authorization': 'Bearer ' + token.access_token});
             Restangular.setDefaultRequestParams({'date': "2015-04-30"});
-            Restangular.all('Reports/HourlySalesMultipleEntries').getList().then(function(entries){
-                $scope.entries = entries;
+            Restangular.one('Reports/HourlySalesMultipleEntries').get().then(function(entries){
+                $scope.entries = entries.HourlySales;
             });
 
             $scope.dtOptions = DTOptionsBuilder.newOptions().withDOM('rtip').withDisplayLength(-1);
@@ -73,7 +73,7 @@ var HourlySalesController = function ($scope, $timeout, Restangular, AccessToken
                 //DTColumnDefBuilder.newColumnDef(1).notVisible(),
                 DTColumnDefBuilder.newColumnDef(2).notSortable().withOption('sWidth', '130px')
             ];
-            $('.page-spinner-bar').addClass('hide');
+            //$('.page-spinner-bar').addClass('hide');
         }
     }
 };
