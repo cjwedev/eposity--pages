@@ -228,8 +228,12 @@ angular.module('app')
                         'assets/plugins/angular-google-map-loader/google-map-loader.js',
                         'assets/plugins/angular-google-map-loader/google-maps.js'
                     ]
+                }, {
+                    name: 'highcharts',
+                    files: [
+                        'assets/plugins/highcharts-ng/highcharts-ng.min.js'
+                    ]
                 }
-
             ]
         });
     }]);

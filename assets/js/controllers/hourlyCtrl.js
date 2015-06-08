@@ -76,4 +76,63 @@ var HourlySalesController = function ($scope, $timeout, Restangular, AccessToken
             //$('.page-spinner-bar').addClass('hide');
         }
     }
+
+    $scope.initCumulativeSales = function () {
+        $scope.chartConfig = {
+            options: {
+                chart: {
+                    type: 'line'
+                }
+            },
+            title: {
+                text: 'Cumulative Sales'
+            },
+            xAxis : {
+                title: {
+                    text: 'Minute'
+                }
+            },
+            yAxis: {
+                title: {
+                    text: 'Sales Amount'
+                }
+            },
+            series: [{
+                name: 'Sales By Minute'
+            }]
+        };
+
+        if (token) {
+            var today = new Date();
+            var yyyy = today.getFullYear().toString();
+            var mm = (today.getMonth() + 1).toString(); // getMonth() is zero-based
+            var dd  = today.getDate().toString();
+
+            var date_str = yyyy + '-' + (mm[1] ? mm : '0' + mm[0]) + '-' + (dd[1] ? dd : '0' + dd[0]);
+            $('#salesDatePicker #salesDate').val(date_str);
+        }
+    }
+
+    $scope.filterCumulativeSales = function() {
+        var date_str = $('#salesDatePicker #salesDate').val();
+        $scope.cumulativeSales = getCumulativeSales(date_str);
+    }
+
+    function getCumulativeSales(filter_date) {
+        var sales_records = {};
+
+        Restangular.setDefaultHeaders({'Authorization': 'Bearer ' + token.access_token});
+        Restangular.setDefaultRequestParams({'date': filter_date});
+        Restangular.one('Reports/CumulativeSales').get().then(function (entries) {
+            $scope.cumulativeSales = entries.SalesByMinute;
+            var series_data = [];
+            for (var i = 0; i < $scope.cumulativeSales.length; i++) {
+                series_data.push([$scope.cumulativeSales[i].MinuteOfDay, $scope.cumulativeSales[i].TotalAmount]);
+            }
+
+            $scope.chartConfig.series[0].data = series_data;
+        });
+
+        return sales_records;
+    }
 };

@@ -35,7 +35,6 @@ accessTokenService.factory('AccessToken', function($rootScope, $location, $local
 
     service.obtainFromServer = function(username, password)
     {
-        console.log('obtainFromServer----------');
         var req = {
             method: 'POST',
             url: service.baseUrl,
@@ -58,7 +57,8 @@ accessTokenService.factory('AccessToken', function($rootScope, $location, $local
         $http(req)
             .success(function(data, status, headers, config){
                 service.setTokenFromJson(data);
-                $localStorage.username = username;
+                $localStorage.username = data.userName;
+                $localStorage.refresh_token = data.refresh_token;
             })
             .error(function(data, status, headers, config){
                 $rootScope.$broadcast('oauth:login-error', { message: data['error'] });
@@ -68,12 +68,11 @@ accessTokenService.factory('AccessToken', function($rootScope, $location, $local
 
     service.refreshTokenFromServer = function()
     {
-        console.log('refreshTokenFromServer----------');
         var req = {
             method: 'POST',
             url: service.baseUrl,
             data: {
-                refresh_token: service.refreshToken,
+                refresh_token: $localStorage.refresh_token,
                 grant_type: 'refresh_token',
                 client_secret: service.clientSecret,
                 client_id: service.clientId
@@ -194,6 +193,7 @@ accessTokenService.factory('AccessToken', function($rootScope, $location, $local
         if(service.token){
             var expires_at = new Date();
             expires_at.setSeconds(expires_at.getSeconds()+parseInt(service.token.expires_in)-60); // 60 seconds less to secure browser and response latency
+            //expires_at.setSeconds(60);
             service.token.expires_at = expires_at;
         }
     };
@@ -206,7 +206,7 @@ accessTokenService.factory('AccessToken', function($rootScope, $location, $local
         var time = (new Date(service.token.expires_at))-(new Date());
         if(time){
             $interval(function(){
-                service.refreshTokenFromServer();
+                //service.refreshTokenFromServer();
             }, time, 1)
         }
     };

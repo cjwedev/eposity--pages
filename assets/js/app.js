@@ -12,7 +12,8 @@ angular.module('app', [
     'oc.lazyLoad',
     'ngSanitize',
     'oauth',
-    'restangular'
+    'restangular',
+    'highcharts-ng'
 ]);
 
 
@@ -36,7 +37,8 @@ angular.module('app').run(function($rootScope, $state, AccessToken) {
     });
 
     $rootScope.$on('oauth:expired', function (e, params) {
-        AccessToken.refreshTokenFromServer();
+        //debugger;
+        //AccessToken.refreshTokenFromServer();
     });
 
     //$rootScope.$on('oauth:login-error', function (event, message, $scope) {

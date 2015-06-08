@@ -191,6 +191,28 @@ angular.module('app')
                         }
                     }
                 })
+                .state('salesCumulative', {
+                    url: '/sales/hourly/cumulative-sales',
+                    data: { pageTitle: "Cumulative Sales" },
+                    authenticate: true,
+                    apiRequest: false,
+                    views: {
+                        'base': {
+                            templateUrl: 'tpl/app.html'
+                        },
+                        'content@salesCumulative': {
+                            templateUrl: 'tpl/views/sales/hourly/cumulative-sales.html',
+                            controller: HourlySalesController,
+                            resolve: {
+                                deps: ['$ocLazyLoad', function($ocLazyLoad) {
+                                    return $ocLazyLoad.load(['dataTables', 'datepicker'], {
+                                        insertBefore: '#lazyload_placeholder'
+                                    });
+                                }]
+                            }
+                        }
+                    }
+                })
                 .state('otherwise', {
                     url: '/otherwise',
                     views: {
